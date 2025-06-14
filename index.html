@@ -6,7 +6,7 @@
     <title>Kanchan Walkes Tuition - Fees Tracking</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
-        /* [All CSS styles from previous version remain exactly the same] */
+        /* Main Styles */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -15,7 +15,299 @@
             color: #333;
             line-height: 1.6;
         }
-        /* [Rest of CSS...] */
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background-color: #3498db;
+            border-radius: 3px;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        /* Button Styles */
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .export-btn {
+            background-color: #27ae60;
+        }
+
+        .export-btn:hover {
+            background-color: #219653;
+        }
+
+        .import-btn {
+            background-color: #f39c12;
+        }
+
+        .import-btn:hover {
+            background-color: #e67e22;
+        }
+
+        .delete-btn {
+            background-color: #e74c3c;
+            margin-top: 15px;
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        /* Student List Styles */
+        .student-list {
+            margin-top: 30px;
+        }
+
+        .student-card {
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .student-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .student-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .student-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .payment-plan {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            background-color: #f1f5f9;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        /* Payment Circles Styles */
+        .payments-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .payment {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .payment-circle {
+            width: 28px;
+            height: 28px;
+            border: 2px solid #3498db;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .payment-circle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .payment-circle.paid {
+            background-color: #2ecc71;
+            border-color: #27ae60;
+            color: white;
+        }
+
+        .payment-amount {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        /* Summary Styles */
+        .total-summary {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f1f5f9;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .summary-item {
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .summary-item div:first-child {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+
+        .summary-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .student-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .payments-container {
+                gap: 15px;
+            }
+            
+            .total-summary {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .summary-item {
+                text-align: left;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .student-card {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -72,9 +364,8 @@
     </div>
 
     <script>
-        // Initialize the application when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
-            // Get all DOM elements
+            // DOM elements
             const studentNameInput = document.getElementById('studentName');
             const paymentPlanSelect = document.getElementById('paymentPlan');
             const addStudentBtn = document.getElementById('addStudent');
@@ -90,13 +381,13 @@
             const totalReceivedEl = document.getElementById('totalReceived');
             const pendingAmountEl = document.getElementById('pendingAmount');
             
-            // Load student data from localStorage or initialize empty array
+            // Student data (stored in memory)
             let students = JSON.parse(localStorage.getItem('kanchanWalkesStudents')) || [];
             
-            // Display students when page loads
+            // Load students when page loads
             renderStudents();
             
-            // Set up event listeners
+            // Event listeners
             addStudentBtn.addEventListener('click', showStudentForm);
             saveStudentBtn.addEventListener('click', saveStudent);
             cancelAddBtn.addEventListener('click', hideStudentForm);
@@ -104,7 +395,7 @@
             importExcelBtn.addEventListener('click', () => fileInput.click());
             fileInput.addEventListener('change', importFromExcel);
             
-            // Function to show the student form
+            // Show student form
             function showStudentForm() {
                 studentForm.classList.remove('hidden');
                 addStudentBtn.classList.add('hidden');
@@ -113,30 +404,19 @@
                 studentNameInput.focus();
             }
             
-            // Function to hide the student form
+            // Hide student form
             function hideStudentForm() {
                 studentForm.classList.add('hidden');
                 addStudentBtn.classList.remove('hidden');
             }
             
-            // Function to save a new student
+            // Save new student
             function saveStudent() {
                 const name = studentNameInput.value.trim();
                 const paymentPlan = parseInt(paymentPlanSelect.value);
                 
                 if (!name) {
                     alert('Please enter student name');
-                    return;
-                }
-                
-                // Check for existing student with same name and payment plan
-                const existingStudent = students.find(s => 
-                    s.name.toLowerCase() === name.toLowerCase() && 
-                    s.paymentPlan === paymentPlan
-                );
-                
-                if (existingStudent) {
-                    alert('A student with this name and payment plan already exists!');
                     return;
                 }
                 
@@ -148,20 +428,26 @@
                     createdAt: new Date().toISOString()
                 };
                 
+                // Check if student already exists
+                if (students.some(s => s.id === newStudent.id)) {
+                    alert('A student with this name already exists!');
+                    return;
+                }
+                
                 students.unshift(newStudent);
                 saveToLocalStorage();
                 renderStudents();
                 hideStudentForm();
             }
             
-            // Function to generate unique student ID
+            // Generate unique student ID
             function generateStudentId(name) {
                 const normalizedName = name.toLowerCase().replace(/\s+/g, '-');
                 const timestamp = Date.now().toString().slice(-5);
                 return `${normalizedName}-${timestamp}`;
             }
             
-            // Function to render all students
+            // Render all students
             function renderStudents() {
                 studentList.innerHTML = '';
                 let totalStudents = 0;
@@ -184,14 +470,14 @@
                     }
                 });
                 
-                // Update summary display
+                // Update summary
                 totalStudentsEl.textContent = totalStudents;
                 totalReceivableEl.textContent = `₹${totalReceivable}`;
                 totalReceivedEl.textContent = `₹${totalReceived}`;
                 pendingAmountEl.textContent = `₹${totalReceivable - totalReceived}`;
             }
             
-            // Function to add a student card to the list
+            // Add student card to the list
             function addStudentCard(student) {
                 const card = document.createElement('div');
                 card.className = 'student-card';
@@ -235,7 +521,7 @@
                 });
             }
             
-            // Function to toggle payment status
+            // Toggle payment status
             function togglePaymentStatus(studentId, paymentIndex) {
                 const student = students.find(s => s.id === studentId);
                 if (student) {
@@ -245,7 +531,7 @@
                 }
             }
             
-            // Function to delete a student
+            // Delete student
             function deleteStudent(studentId) {
                 if (confirm('Are you sure you want to delete this student?')) {
                     students = students.filter(s => s.id !== studentId);
@@ -254,12 +540,12 @@
                 }
             }
             
-            // Function to save data to localStorage
+            // Save to localStorage
             function saveToLocalStorage() {
                 localStorage.setItem('kanchanWalkesStudents', JSON.stringify(students));
             }
             
-            // Function to export data to Excel
+            // Export to Excel
             function exportToExcel() {
                 // Prepare data for export
                 const exportData = students.map(student => {
@@ -293,7 +579,7 @@
                 XLSX.writeFile(wb, `Kanchan_Walkes_Tuition_${date}.xlsx`);
             }
             
-            // Function to import data from Excel
+            // Import from Excel
             function importFromExcel(event) {
                 const file = event.target.files[0];
                 if (!file) return;
@@ -312,7 +598,7 @@
                         // Extract payment plan from the string (e.g. "2 installments")
                         const paymentPlan = parseInt(row['Payment Plan']?.toString().split(' ')[0]) || 2;
                         const installmentAmount = parseInt(row['Installment Amount']?.replace('₹', '')) || 
-                                                (paymentPlan === 2 ? 2700 : 1800);
+                                               (paymentPlan === 2 ? 2700 : 1800);
                         
                         // Determine payment statuses
                         const payments = [];
