@@ -3,36 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
     <title>Kanchan Walkes Tuition - Fees Tracking</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
-        /* Main Styles */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --white: #ffffff;
+            --border-radius: 8px;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
-            padding: 20px;
-            background-color: #f8f9fa;
-            color: #333;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            padding: 2rem;
+            color: var(--dark);
             line-height: 1.6;
         }
 
         .container {
             max-width: 1000px;
             margin: 0 auto;
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
         }
 
         h1 {
-            color: #2c3e50;
+            color: var(--primary);
             text-align: center;
-            margin-bottom: 30px;
-            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            font-weight: 600;
             position: relative;
-            padding-bottom: 15px;
+            padding-bottom: 1rem;
         }
 
         h1::after {
@@ -41,273 +58,213 @@
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background-color: #3498db;
-            border-radius: 3px;
-        }
-
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-
-        input:focus, select:focus {
-            border-color: #3498db;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-        }
-
-        /* Button Styles */
-        button {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        button:hover {
-            background-color: #2980b9;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        button:active {
-            transform: translateY(0);
-        }
-
-        .export-btn {
-            background-color: #27ae60;
-        }
-
-        .export-btn:hover {
-            background-color: #219653;
-        }
-
-        .import-btn {
-            background-color: #f39c12;
-        }
-
-        .import-btn:hover {
-            background-color: #e67e22;
-        }
-
-        .delete-btn {
-            background-color: #e74c3c;
-            margin-top: 15px;
-            padding: 8px 15px;
-            font-size: 14px;
-        }
-
-        .delete-btn:hover {
-            background-color: #c0392b;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--success));
+            border-radius: 2px;
         }
 
         .button-group {
             display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
             flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 25px;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        #addStudent {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        #addStudent:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        #exportExcel {
+            background-color: var(--success);
+            color: var(--white);
+        }
+
+        #importExcel {
+            background-color: #f39c12;
+            color: var(--white);
         }
 
         .file-input {
             display: none;
         }
 
-        /* Student List Styles */
+        #studentForm {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .metric-card h3 {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
         .student-list {
-            margin-top: 30px;
+            margin-top: 2rem;
         }
 
         .student-card {
-            background-color: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s, box-shadow 0.3s;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+            transition: var(--transition);
         }
 
         .student-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
 
         .student-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            gap: 10px;
+            margin-bottom: 1rem;
         }
 
         .student-name {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             font-weight: 600;
-            color: #2c3e50;
         }
 
         .payment-plan {
-            font-size: 0.9rem;
-            color: #7f8c8d;
-            background-color: #f1f5f9;
-            padding: 4px 10px;
-            border-radius: 20px;
+            font-size: 0.875rem;
+            color: var(--gray);
+            background: #f1f5f9;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
         }
 
-        /* Payment Circles Styles */
         .payments-container {
             display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 15px;
+            gap: 1.5rem;
+            margin-top: 1rem;
         }
 
         .payment {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 0.5rem;
         }
 
         .payment-circle {
             width: 28px;
             height: 28px;
-            border: 2px solid #3498db;
+            border: 2px solid var(--primary);
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
+            transition: var(--transition);
+        }
+
+        .payment-circle.paid {
+            background-color: var(--success);
+            border-color: var(--success);
+            color: var(--white);
         }
 
         .payment-circle:hover {
             transform: scale(1.1);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-        }
-
-        .payment-circle.paid {
-            background-color: #2ecc71;
-            border-color: #27ae60;
-            color: white;
         }
 
         .payment-amount {
             font-weight: 600;
-            color: #2c3e50;
         }
 
-        /* Summary Styles */
-        .total-summary {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #f1f5f9;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 15px;
+        .delete-btn {
+            background-color: var(--danger);
+            color: var(--white);
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
         }
 
-        .summary-item {
-            text-align: center;
-            flex: 1;
-            min-width: 150px;
-        }
-
-        .summary-item div:first-child {
-            font-size: 0.9rem;
-            color: #7f8c8d;
-            margin-bottom: 5px;
-        }
-
-        .summary-value {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #2c3e50;
-        }
-
-        /* Responsive Design */
         @media (max-width: 768px) {
-            .container {
-                padding: 20px;
+            body {
+                padding: 1rem;
             }
             
-            h1 {
-                font-size: 1.8rem;
+            .button-group {
+                flex-direction: column;
             }
             
             .student-header {
                 flex-direction: column;
                 align-items: flex-start;
+                gap: 0.5rem;
             }
             
             .payments-container {
-                gap: 15px;
-            }
-            
-            .total-summary {
                 flex-direction: column;
-                gap: 20px;
+                gap: 0.75rem;
             }
-            
-            .summary-item {
-                text-align: left;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-        }
-
-        /* Animation */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .student-card {
-            animation: fadeIn 0.4s ease-out forwards;
-        }
-
-        /* Utility Classes */
-        .hidden {
-            display: none !important;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .mt-20 {
-            margin-top: 20px;
         }
     </style>
 </head>
@@ -317,12 +274,12 @@
         
         <div class="button-group">
             <button id="addStudent">Add Student</button>
-            <button class="export-btn" id="exportExcel">Export to Excel</button>
-            <button class="import-btn" id="importExcel">Import from Excel</button>
+            <button id="exportExcel">Export to Excel</button>
+            <button id="importExcel">Import from Excel</button>
             <input type="file" id="fileInput" class="file-input" accept=".xlsx, .xls">
         </div>
         
-        <div id="studentForm" class="hidden">
+        <div id="studentForm">
             <div class="form-group">
                 <label for="studentName">Student Name</label>
                 <input type="text" id="studentName" placeholder="Enter student name">
@@ -336,26 +293,28 @@
                 </select>
             </div>
             
-            <button id="saveStudent">Save Student</button>
-            <button id="cancelAdd">Cancel</button>
+            <div class="button-group">
+                <button id="saveStudent">Save Student</button>
+                <button id="cancelAdd">Cancel</button>
+            </div>
         </div>
         
-        <div class="total-summary">
-            <div class="summary-item">
-                <div>Total Students</div>
-                <div class="summary-value" id="totalStudents">0</div>
+        <div class="dashboard">
+            <div class="metric-card">
+                <h3>Total Students</h3>
+                <div class="metric-value" id="totalStudents">0</div>
             </div>
-            <div class="summary-item">
-                <div>Total Receivable</div>
-                <div class="summary-value" id="totalReceivable">₹0</div>
+            <div class="metric-card">
+                <h3>Total Receivable</h3>
+                <div class="metric-value" id="totalReceivable">₹0</div>
             </div>
-            <div class="summary-item">
-                <div>Total Received</div>
-                <div class="summary-value" id="totalReceived">₹0</div>
+            <div class="metric-card">
+                <h3>Total Received</h3>
+                <div class="metric-value" id="totalReceived">₹0</div>
             </div>
-            <div class="summary-item">
-                <div>Pending Amount</div>
-                <div class="summary-value" id="pendingAmount">₹0</div>
+            <div class="metric-card">
+                <h3>Pending Amount</h3>
+                <div class="metric-value" id="pendingAmount">₹0</div>
             </div>
         </div>
         
@@ -382,10 +341,10 @@
             const totalReceivedEl = document.getElementById('totalReceived');
             const pendingAmountEl = document.getElementById('pendingAmount');
             
-            // Student data (stored in memory)
+            // Student data
             let students = JSON.parse(localStorage.getItem('kanchanWalkesStudents')) || [];
             
-            // Load students when page loads
+            // Load students
             renderStudents();
             
             // Event listeners
@@ -396,22 +355,18 @@
             importExcelBtn.addEventListener('click', () => fileInput.click());
             fileInput.addEventListener('change', importFromExcel);
             
-            // Show student form
             function showStudentForm() {
-                studentForm.classList.remove('hidden');
-                addStudentBtn.classList.add('hidden');
+                studentForm.style.display = 'block';
+                addStudentBtn.style.display = 'none';
                 studentNameInput.value = '';
                 paymentPlanSelect.value = '2';
-                studentNameInput.focus();
             }
             
-            // Hide student form
             function hideStudentForm() {
-                studentForm.classList.add('hidden');
-                addStudentBtn.classList.remove('hidden');
+                studentForm.style.display = 'none';
+                addStudentBtn.style.display = 'block';
             }
             
-            // Save new student
             function saveStudent() {
                 const name = studentNameInput.value.trim();
                 const paymentPlan = parseInt(paymentPlanSelect.value);
@@ -422,18 +377,12 @@
                 }
                 
                 const newStudent = {
-                    id: generateStudentId(name),
+                    id: Date.now().toString(),
                     name: name,
                     paymentPlan: paymentPlan,
                     payments: Array(paymentPlan).fill(false),
                     createdAt: new Date().toISOString()
                 };
-                
-                // Check if student already exists
-                if (students.some(s => s.id === newStudent.id)) {
-                    alert('A student with this name already exists!');
-                    return;
-                }
                 
                 students.unshift(newStudent);
                 saveToLocalStorage();
@@ -441,14 +390,6 @@
                 hideStudentForm();
             }
             
-            // Generate unique student ID
-            function generateStudentId(name) {
-                const normalizedName = name.toLowerCase().replace(/\s+/g, '-');
-                const timestamp = Date.now().toString().slice(-5);
-                return `${normalizedName}-${timestamp}`;
-            }
-            
-            // Render all students
             function renderStudents() {
                 studentList.innerHTML = '';
                 let totalStudents = 0;
@@ -460,25 +401,23 @@
                     
                     totalStudents++;
                     if (student.paymentPlan === 2) {
-                        totalReceivable += 5400; // 2 x 2700
+                        totalReceivable += 5400;
                         totalReceived += student.payments[0] ? 2700 : 0;
                         totalReceived += student.payments[1] ? 2700 : 0;
                     } else {
-                        totalReceivable += 5400; // 3 x 1800 (same total)
+                        totalReceivable += 5400;
                         totalReceived += student.payments[0] ? 1800 : 0;
                         totalReceived += student.payments[1] ? 1800 : 0;
                         totalReceived += student.payments[2] ? 1800 : 0;
                     }
                 });
                 
-                // Update summary
                 totalStudentsEl.textContent = totalStudents;
                 totalReceivableEl.textContent = `₹${totalReceivable}`;
                 totalReceivedEl.textContent = `₹${totalReceived}`;
                 pendingAmountEl.textContent = `₹${totalReceivable - totalReceived}`;
             }
             
-            // Add student card to the list
             function addStudentCard(student) {
                 const card = document.createElement('div');
                 card.className = 'student-card';
@@ -509,20 +448,17 @@
                 
                 studentList.appendChild(card);
                 
-                // Add click events to payment circles
                 card.querySelectorAll('.payment-circle').forEach((circle, index) => {
                     circle.addEventListener('click', function() {
                         togglePaymentStatus(student.id, index);
                     });
                 });
                 
-                // Add click event to delete button
                 card.querySelector('.delete-btn').addEventListener('click', function() {
                     deleteStudent(student.id);
                 });
             }
             
-            // Toggle payment status
             function togglePaymentStatus(studentId, paymentIndex) {
                 const student = students.find(s => s.id === studentId);
                 if (student) {
@@ -532,7 +468,6 @@
                 }
             }
             
-            // Delete student
             function deleteStudent(studentId) {
                 if (confirm('Are you sure you want to delete this student?')) {
                     students = students.filter(s => s.id !== studentId);
@@ -541,46 +476,33 @@
                 }
             }
             
-            // Save to localStorage
             function saveToLocalStorage() {
                 localStorage.setItem('kanchanWalkesStudents', JSON.stringify(students));
             }
             
-            // Export to Excel
             function exportToExcel() {
-                // Prepare data for export
                 const exportData = students.map(student => {
                     const isTwoInstallments = student.paymentPlan === 2;
                     const installmentAmount = isTwoInstallments ? 2700 : 1800;
                     const paidCount = student.payments.filter(p => p).length;
                     
                     return {
-                        'Student ID': student.id,
                         'Student Name': student.name,
-                        'Payment Plan': `${student.paymentPlan} installments`,
-                        'Installment Amount': `₹${installmentAmount}`,
+                        'Payment Plan': `${student.paymentPlan} installments of ₹${installmentAmount}`,
                         'Payment 1': student.payments[0] ? 'Paid' : 'Pending',
                         'Payment 2': student.payments[1] ? 'Paid' : 'Pending',
                         'Payment 3': student.paymentPlan === 3 ? (student.payments[2] ? 'Paid' : 'Pending') : 'N/A',
                         'Total Paid': `₹${paidCount * installmentAmount}`,
-                        'Total Due': `₹${(student.paymentPlan - paidCount) * installmentAmount}`,
                         'Date Added': new Date(student.createdAt).toLocaleDateString()
                     };
                 });
                 
-                // Create worksheet
                 const ws = XLSX.utils.json_to_sheet(exportData);
-                
-                // Create workbook
                 const wb = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(wb, ws, "Students");
-                
-                // Generate Excel file
-                const date = new Date().toISOString().slice(0, 10);
-                XLSX.writeFile(wb, `Kanchan_Walkes_Tuition_${date}.xlsx`);
+                XLSX.writeFile(wb, `Kanchan_Walkes_Tuition_${new Date().toISOString().slice(0,10)}.xlsx`);
             }
             
-            // Import from Excel
             function importFromExcel(event) {
                 const file = event.target.files[0];
                 if (!file) return;
@@ -589,19 +511,14 @@
                 reader.onload = function(e) {
                     const data = new Uint8Array(e.target.result);
                     const workbook = XLSX.read(data, { type: 'array' });
-                    
-                    // Get first sheet
                     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
                     const jsonData = XLSX.utils.sheet_to_json(worksheet);
                     
-                    // Process imported data
                     const importedStudents = jsonData.map(row => {
-                        // Extract payment plan from the string (e.g. "2 installments")
                         const paymentPlan = parseInt(row['Payment Plan']?.toString().split(' ')[0]) || 2;
                         const installmentAmount = parseInt(row['Installment Amount']?.replace('₹', '')) || 
                                                (paymentPlan === 2 ? 2700 : 1800);
                         
-                        // Determine payment statuses
                         const payments = [];
                         payments[0] = row['Payment 1'] === 'Paid';
                         payments[1] = row['Payment 2'] === 'Paid';
@@ -610,37 +527,21 @@
                         }
                         
                         return {
-                            id: row['Student ID'] || generateStudentId(row['Student Name'] || 'Unknown'),
+                            id: Date.now().toString() + Math.random().toString(36).substr(2,5),
                             name: row['Student Name'] || 'Unknown',
                             paymentPlan: paymentPlan,
                             payments: payments,
-                            createdAt: row['Date Added'] ? new Date(row['Date Added']).toISOString() : new Date().toISOString()
+                            createdAt: new Date().toISOString()
                         };
                     });
                     
-                    // Filter out duplicates by checking both name and payment plan
-                    const newStudents = importedStudents.filter(imported => 
-                        !students.some(existing => 
-                            existing.name.toLowerCase() === imported.name.toLowerCase() && 
-                            existing.paymentPlan === imported.paymentPlan
-                        )
-                    );
-                    
-                    if (newStudents.length === 0) {
-                        alert('No new students to import - all students in the file already exist.');
-                        return;
-                    }
-                    
-                    if (confirm(`Import ${newStudents.length} new student(s)?`)) {
-                        students = [...newStudents, ...students];
+                    if (confirm(`Import ${importedStudents.length} students?`)) {
+                        students = [...importedStudents, ...students];
                         saveToLocalStorage();
                         renderStudents();
-                        alert(`Successfully imported ${newStudents.length} student(s)`);
                     }
                 };
                 reader.readAsArrayBuffer(file);
-                
-                // Reset file input
                 event.target.value = '';
             }
         });
