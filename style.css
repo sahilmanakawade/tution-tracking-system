@@ -174,11 +174,12 @@ button:active {
     border-radius: 20px;
 }
 
+/* Payment Circles Styles */
 .payments-container {
     display: flex;
-    gap: 20px;
+    flex-direction: column;
+    gap: 12px;
     margin-top: 15px;
-    flex-wrap: wrap;
 }
 
 .payment {
@@ -298,10 +299,4 @@ button:active {
 
 .mt-20 {
     margin-top: 20px;
-}
-
-/* Icons (using Unicode symbols) */
-button[data-icon]::before {
-    content: attr(data-icon);
-    font-size: 1.1em;
 }
