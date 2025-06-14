@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanchan Walkes Tuition - Fees Tracking</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .student-list {
+            margin-top: 30px;
+        }
+        .student-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .student-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .student-name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .payment-plan {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        .payments-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .payment {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .payment-circle {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #3498db;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .payment-circle.paid {
+            background-color: #2ecc71;
+            border-color: #27ae60;
+            color: white;
+        }
+        .payment-amount {
+            font-weight: bold;
+        }
+        .export-btn {
+            background-color: #27ae60;
+        }
+        .export-btn:hover {
+            background-color: #219653;
+        }
+        .import-btn {
+            background-color: #f39c12;
+        }
+        .import-btn:hover {
+            background-color: #e67e22;
+        }
+        .total-summary {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .summary-item {
+            text-align: center;
+        }
+        .summary-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .delete-btn {
+            background-color: #e74c3c;
+            margin-left: 10px;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .file-input {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Kanchan Walkes Tuition - Fees Tracking</h1>
+        
+        <div class="button-group">
+            <button id="addStudent">Add Student</button>
+            <button class="export-btn" id="exportExcel">Export to Excel</button>
+            <button class="import-btn" id="importExcel">Import from Excel</button>
+            <input type="file" id="fileInput" class="file-input" accept=".xlsx, .xls">
+        </div>
+        
+        <div id="studentForm" style="display: none;">
+            <div class="form-group">
+                <label for="studentName">Student Name</label>
+                <input type="text" id="studentName" placeholder="Enter student name">
+            </div>
+            
+            <div class="form-group">
+                <label for="paymentPlan">Payment Plan</label>
+                <select id="paymentPlan">
+                    <option value="2">2 Installments (₹2700 each)</option>
+                    <option value="3">3 Installments (₹1800 each)</option>
+                </select>
+            </div>
+            
+            <button id="saveStudent">Save Student</button>
+            <button id="cancelAdd">Cancel</button>
+        </div>
+        
+        <div class="total-summary">
+            <div class="summary-item">
+                <div>Total Students</div>
+                <div class="summary-value" id="totalStudents">0</div>
+            </div>
+            <div class="summary-item">
+                <div>Total Receivable</div>
+                <div class="summary-value" id="totalReceivable">₹0</div>
+            </div>
+            <div class="summary-item">
+                <div>Total Received</div>
+                <div class="summary-value" id="totalReceived">₹0</div>
+            </div>
+            <div class="summary-item">
+                <div>Pending Amount</div>
+                <div class="summary-value" id="pendingAmount">₹0</div>
+            </div>
+        </div>
+        
+        <div class="student-list" id="studentList">
+            <!-- Student cards will be added here -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM elements
+            const studentNameInput = document.getElementById('studentName');
+            const paymentPlanSelect = document.getElementById('paymentPlan');
+            const addStudentBtn = document.getElementById('addStudent');
+            const saveStudentBtn = document.getElementById('saveStudent');
+            const cancelAddBtn = document.getElementById('cancelAdd');
+            const studentForm = document.getElementById('studentForm');
+            const studentList = document.getElementById('studentList');
+            const exportExcelBtn = document.getElementById('exportExcel');
+            const importExcelBtn = document.getElementById('importExcel');
+            const fileInput = document.getElementById('fileInput');
+            const totalStudentsEl = document.getElementById('totalStudents');
+            const totalReceivableEl = document.getElementById('totalReceivable');
+            const totalReceivedEl = document.getElementById('totalReceived');
+            const pendingAmountEl = document.getElementById('pendingAmount');
+            
+            // Student data (stored in memory)
+            let students = JSON.parse(localStorage.getItem('kanchanWalkesStudents')) || [];
+            
+            // Load students when page loads
+            renderStudents();
+            
+            // Event listeners
+            addStudentBtn.addEventListener('click', showStudentForm);
+            saveStudentBtn.addEventListener('click', saveStudent);
+            cancelAddBtn.addEventListener('click', hideStudentForm);
+            exportExcelBtn.addEventListener('click', exportToExcel);
+            importExcelBtn.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', importFromExcel);
+            
+            // Show student form
+            function showStudentForm() {
+                studentForm.style.display = 'block';
+                addStudentBtn.style.display = 'none';
+                studentNameInput.value = '';
+                paymentPlanSelect.value = '2';
+            }
+            
+            // Hide student form
+            function hideStudentForm() {
+                studentForm.style.display = 'none';
+                addStudentBtn.style.display = 'block';
+            }
+            
+            // Save new student
+            function saveStudent() {
+                const name = studentNameInput.value.trim();
+                const paymentPlan = parseInt(paymentPlanSelect.value);
+                
+                if (!name) {
+                    alert('Please enter student name');
+                    return;
+                }
+                
+                const newStudent = {
+                    id: Date.now().toString(),
+                    name: name,
+                    paymentPlan: paymentPlan,
+                    payments: Array(paymentPlan).fill(false),
+                    createdAt: new Date().toISOString()
+                };
+                
+                students.unshift(newStudent);
+                saveToLocalStorage();
+                renderStudents();
+                hideStudentForm();
+            }
+            
+            // Render all students
+            function renderStudents() {
+                studentList.innerHTML = '';
+                let totalStudents = 0;
+                let totalReceivable = 0;
+                let totalReceived = 0;
+                
+                students.forEach(student => {
+                    addStudentCard(student);
+                    
+                    totalStudents++;
+                    if (student.paymentPlan === 2) {
+                        totalReceivable += 5400; // 2 x 2700
+                        totalReceived += student.payments[0] ? 2700 : 0;
+                        totalReceived += student.payments[1] ? 2700 : 0;
+                    } else {
+                        totalReceivable += 5400; // 3 x 1800 (same total)
+                        totalReceived += student.payments[0] ? 1800 : 0;
+                        totalReceived += student.payments[1] ? 1800 : 0;
+                        totalReceived += student.payments[2] ? 1800 : 0;
+                    }
+                });
+                
+                // Update summary
+                totalStudentsEl.textContent = totalStudents;
+                totalReceivableEl.textContent = `₹${totalReceivable}`;
+                totalReceivedEl.textContent = `₹${totalReceived}`;
+                pendingAmountEl.textContent = `₹${totalReceivable - totalReceived}`;
+            }
+            
+            // Add student card to the list
+            function addStudentCard(student) {
+                const card = document.createElement('div');
+                card.className = 'student-card';
+                card.dataset.id = student.id;
+                
+                const isTwoInstallments = student.paymentPlan === 2;
+                const installmentAmount = isTwoInstallments ? 2700 : 1800;
+                const installmentsCount = student.paymentPlan;
+                
+                card.innerHTML = `
+                    <div class="student-header">
+                        <div class="student-name">${student.name}</div>
+                        <div class="payment-plan">${installmentsCount} installments of ₹${installmentAmount}</div>
+                    </div>
+                    <div class="payments-container">
+                        ${student.payments.map((paid, index) => `
+                            <div class="payment">
+                                <div class="payment-circle ${paid ? 'paid' : ''}" 
+                                     data-payment-num="${index}">
+                                    ${paid ? '✓' : ''}
+                                </div>
+                                <div class="payment-amount">₹${installmentAmount}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button class="delete-btn" data-id="${student.id}">Delete</button>
+                `;
+                
+                studentList.appendChild(card);
+                
+                // Add click events to payment circles
+                card.querySelectorAll('.payment-circle').forEach((circle, index) => {
+                    circle.addEventListener('click', function() {
+                        togglePaymentStatus(student.id, index);
+                    });
+                });
+                
+                // Add click event to delete button
+                card.querySelector('.delete-btn').addEventListener('click', function() {
+                    deleteStudent(student.id);
+                });
+            }
+            
+            // Toggle payment status
+            function togglePaymentStatus(studentId, paymentIndex) {
+                const student = students.find(s => s.id === studentId);
+                if (student) {
+                    student.payments[paymentIndex] = !student.payments[paymentIndex];
+                    saveToLocalStorage();
+                    renderStudents();
+                }
+            }
+            
+            // Delete student
+            function deleteStudent(studentId) {
+                if (confirm('Are you sure you want to delete this student?')) {
+                    students = students.filter(s => s.id !== studentId);
+                    saveToLocalStorage();
+                    renderStudents();
+                }
+            }
+            
+            // Save to localStorage
+            function saveToLocalStorage() {
+                localStorage.setItem('kanchanWalkesStudents', JSON.stringify(students));
+            }
+            
+            // Export to Excel
+            function exportToExcel() {
+                // Prepare data for export
+                const exportData = students.map(student => {
+                    const isTwoInstallments = student.paymentPlan === 2;
+                    const installmentAmount = isTwoInstallments ? 2700 : 1800;
+                    
+                    return {
+                        'Student Name': student.name,
+                        'Payment Plan': `${student.paymentPlan} installments of ₹${installmentAmount}`,
+                        'Payment 1': student.payments[0] ? 'Paid' : 'Pending',
+                        'Payment 2': student.payments[1] ? 'Paid' : 'Pending',
+                        'Payment 3': student.paymentPlan === 3 ? (student.payments[2] ? 'Paid' : 'Pending') : 'N/A',
+                        'Total Paid': student.payments.filter(p => p).length * installmentAmount,
+                        'Date Added': new Date(student.createdAt).toLocaleDateString()
+                    };
+                });
+                
+                // Create worksheet
+                const ws = XLSX.utils.json_to_sheet(exportData);
+                
+                // Create workbook
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Students");
+                
+                // Generate Excel file
+                const date = new Date().toISOString().slice(0, 10);
+                XLSX.writeFile(wb, `Kanchan_Walkes_Tuition_${date}.xlsx`);
+            }
+            
+            // Import from Excel
+            function importFromExcel(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    
+                    // Get first sheet
+                    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet);
+                    
+                    // Process imported data
+                    const importedStudents = jsonData.map(row => {
+                        // Try to determine payment plan from the data
+                        let paymentPlan = 2;
+                        if (row['Payment Plan'] && row['Payment Plan'].includes('3 installments')) {
+                            paymentPlan = 3;
+                        }
+                        
+                        // Determine payment statuses
+                        const payments = [];
+                        payments[0] = row['Payment 1'] === 'Paid';
+                        payments[1] = row['Payment 2'] === 'Paid';
+                        if (paymentPlan === 3) {
+                            payments[2] = row['Payment 3'] === 'Paid';
+                        }
+                        
+                        return {
+                            id: Date.now().toString() + Math.random().toString(36).substr(2, 5),
+                            name: row['Student Name'] || 'Unknown',
+                            paymentPlan: paymentPlan,
+                            payments: payments,
+                            createdAt: new Date().toISOString()
+                        };
+                    });
+                    
+                    // Add to existing students (or replace)
+                    if (confirm(`Import ${importedStudents.length} students? This will add them to your current list.`)) {
+                        students = [...importedStudents, ...students];
+                        saveToLocalStorage();
+                        renderStudents();
+                    }
+                };
+                reader.readAsArrayBuffer(file);
+                
+                // Reset file input
+                event.target.value = '';
+            }
+        });
+    </script>
+</body>
+</html>
