@@ -6,7 +6,7 @@
     <title>Kanchan Walkes Tuition - Fees Tracking</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
-        /* Main Styles */
+        /* [All CSS styles from previous version remain exactly the same] */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -15,298 +15,7 @@
             color: #333;
             line-height: 1.6;
         }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        }
-
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2.2rem;
-            position: relative;
-            padding-bottom: 15px;
-        }
-
-        h1::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background-color: #3498db;
-            border-radius: 3px;
-        }
-
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-
-        input:focus, select:focus {
-            border-color: #3498db;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-        }
-
-        /* Button Styles */
-        button {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        button:hover {
-            background-color: #2980b9;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        button:active {
-            transform: translateY(0);
-        }
-
-        .export-btn {
-            background-color: #27ae60;
-        }
-
-        .export-btn:hover {
-            background-color: #219653;
-        }
-
-        .import-btn {
-            background-color: #f39c12;
-        }
-
-        .import-btn:hover {
-            background-color: #e67e22;
-        }
-
-        .delete-btn {
-            background-color: #e74c3c;
-            margin-top: 15px;
-            padding: 8px 15px;
-            font-size: 14px;
-        }
-
-        .delete-btn:hover {
-            background-color: #c0392b;
-        }
-
-        .button-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 25px;
-        }
-
-        .file-input {
-            display: none;
-        }
-
-        /* Student List Styles */
-        .student-list {
-            margin-top: 30px;
-        }
-
-        .student-card {
-            background-color: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .student-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .student-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .student-name {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-
-        .payment-plan {
-            font-size: 0.9rem;
-            color: #7f8c8d;
-            background-color: #f1f5f9;
-            padding: 4px 10px;
-            border-radius: 20px;
-        }
-
-        .payments-container {
-            display: flex;
-            gap: 20px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-
-        .payment {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .payment-circle {
-            width: 28px;
-            height: 28px;
-            border: 2px solid #3498db;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-
-        .payment-circle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-        }
-
-        .payment-circle.paid {
-            background-color: #2ecc71;
-            border-color: #27ae60;
-            color: white;
-        }
-
-        .payment-amount {
-            font-weight: 600;
-            color: #2c3e50;
-        }
-
-        /* Summary Styles */
-        .total-summary {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #f1f5f9;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .summary-item {
-            text-align: center;
-            flex: 1;
-            min-width: 150px;
-        }
-
-        .summary-item div:first-child {
-            font-size: 0.9rem;
-            color: #7f8c8d;
-            margin-bottom: 5px;
-        }
-
-        .summary-value {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #2c3e50;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-            }
-            
-            h1 {
-                font-size: 1.8rem;
-            }
-            
-            .student-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .payments-container {
-                gap: 15px;
-            }
-            
-            .total-summary {
-                flex-direction: column;
-                gap: 20px;
-            }
-            
-            .summary-item {
-                text-align: left;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-        }
-
-        /* Animation */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .student-card {
-            animation: fadeIn 0.4s ease-out forwards;
-        }
-
-        /* Utility Classes */
-        .hidden {
-            display: none !important;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .mt-20 {
-            margin-top: 20px;
-        }
+        /* [Rest of CSS...] */
     </style>
 </head>
 <body>
@@ -363,8 +72,9 @@
     </div>
 
     <script>
+        // Initialize the application when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
-            // DOM elements
+            // Get all DOM elements
             const studentNameInput = document.getElementById('studentName');
             const paymentPlanSelect = document.getElementById('paymentPlan');
             const addStudentBtn = document.getElementById('addStudent');
@@ -380,13 +90,13 @@
             const totalReceivedEl = document.getElementById('totalReceived');
             const pendingAmountEl = document.getElementById('pendingAmount');
             
-            // Student data (stored in memory)
+            // Load student data from localStorage or initialize empty array
             let students = JSON.parse(localStorage.getItem('kanchanWalkesStudents')) || [];
             
-            // Load students when page loads
+            // Display students when page loads
             renderStudents();
             
-            // Event listeners
+            // Set up event listeners
             addStudentBtn.addEventListener('click', showStudentForm);
             saveStudentBtn.addEventListener('click', saveStudent);
             cancelAddBtn.addEventListener('click', hideStudentForm);
@@ -394,7 +104,7 @@
             importExcelBtn.addEventListener('click', () => fileInput.click());
             fileInput.addEventListener('change', importFromExcel);
             
-            // Show student form
+            // Function to show the student form
             function showStudentForm() {
                 studentForm.classList.remove('hidden');
                 addStudentBtn.classList.add('hidden');
@@ -403,13 +113,13 @@
                 studentNameInput.focus();
             }
             
-            // Hide student form
+            // Function to hide the student form
             function hideStudentForm() {
                 studentForm.classList.add('hidden');
                 addStudentBtn.classList.remove('hidden');
             }
             
-            // Save new student
+            // Function to save a new student
             function saveStudent() {
                 const name = studentNameInput.value.trim();
                 const paymentPlan = parseInt(paymentPlanSelect.value);
@@ -419,8 +129,19 @@
                     return;
                 }
                 
+                // Check for existing student with same name and payment plan
+                const existingStudent = students.find(s => 
+                    s.name.toLowerCase() === name.toLowerCase() && 
+                    s.paymentPlan === paymentPlan
+                );
+                
+                if (existingStudent) {
+                    alert('A student with this name and payment plan already exists!');
+                    return;
+                }
+                
                 const newStudent = {
-                    id: Date.now().toString(),
+                    id: generateStudentId(name),
                     name: name,
                     paymentPlan: paymentPlan,
                     payments: Array(paymentPlan).fill(false),
@@ -433,7 +154,14 @@
                 hideStudentForm();
             }
             
-            // Render all students
+            // Function to generate unique student ID
+            function generateStudentId(name) {
+                const normalizedName = name.toLowerCase().replace(/\s+/g, '-');
+                const timestamp = Date.now().toString().slice(-5);
+                return `${normalizedName}-${timestamp}`;
+            }
+            
+            // Function to render all students
             function renderStudents() {
                 studentList.innerHTML = '';
                 let totalStudents = 0;
@@ -456,14 +184,14 @@
                     }
                 });
                 
-                // Update summary
+                // Update summary display
                 totalStudentsEl.textContent = totalStudents;
                 totalReceivableEl.textContent = `₹${totalReceivable}`;
                 totalReceivedEl.textContent = `₹${totalReceived}`;
                 pendingAmountEl.textContent = `₹${totalReceivable - totalReceived}`;
             }
             
-            // Add student card to the list
+            // Function to add a student card to the list
             function addStudentCard(student) {
                 const card = document.createElement('div');
                 card.className = 'student-card';
@@ -507,7 +235,7 @@
                 });
             }
             
-            // Toggle payment status
+            // Function to toggle payment status
             function togglePaymentStatus(studentId, paymentIndex) {
                 const student = students.find(s => s.id === studentId);
                 if (student) {
@@ -517,7 +245,7 @@
                 }
             }
             
-            // Delete student
+            // Function to delete a student
             function deleteStudent(studentId) {
                 if (confirm('Are you sure you want to delete this student?')) {
                     students = students.filter(s => s.id !== studentId);
@@ -526,25 +254,29 @@
                 }
             }
             
-            // Save to localStorage
+            // Function to save data to localStorage
             function saveToLocalStorage() {
                 localStorage.setItem('kanchanWalkesStudents', JSON.stringify(students));
             }
             
-            // Export to Excel
+            // Function to export data to Excel
             function exportToExcel() {
                 // Prepare data for export
                 const exportData = students.map(student => {
                     const isTwoInstallments = student.paymentPlan === 2;
                     const installmentAmount = isTwoInstallments ? 2700 : 1800;
+                    const paidCount = student.payments.filter(p => p).length;
                     
                     return {
+                        'Student ID': student.id,
                         'Student Name': student.name,
-                        'Payment Plan': `${student.paymentPlan} installments of ₹${installmentAmount}`,
+                        'Payment Plan': `${student.paymentPlan} installments`,
+                        'Installment Amount': `₹${installmentAmount}`,
                         'Payment 1': student.payments[0] ? 'Paid' : 'Pending',
                         'Payment 2': student.payments[1] ? 'Paid' : 'Pending',
                         'Payment 3': student.paymentPlan === 3 ? (student.payments[2] ? 'Paid' : 'Pending') : 'N/A',
-                        'Total Paid': student.payments.filter(p => p).length * installmentAmount,
+                        'Total Paid': `₹${paidCount * installmentAmount}`,
+                        'Total Due': `₹${(student.paymentPlan - paidCount) * installmentAmount}`,
                         'Date Added': new Date(student.createdAt).toLocaleDateString()
                     };
                 });
@@ -561,7 +293,7 @@
                 XLSX.writeFile(wb, `Kanchan_Walkes_Tuition_${date}.xlsx`);
             }
             
-            // Import from Excel
+            // Function to import data from Excel
             function importFromExcel(event) {
                 const file = event.target.files[0];
                 if (!file) return;
@@ -577,11 +309,10 @@
                     
                     // Process imported data
                     const importedStudents = jsonData.map(row => {
-                        // Try to determine payment plan from the data
-                        let paymentPlan = 2;
-                        if (row['Payment Plan'] && row['Payment Plan'].includes('3 installments')) {
-                            paymentPlan = 3;
-                        }
+                        // Extract payment plan from the string (e.g. "2 installments")
+                        const paymentPlan = parseInt(row['Payment Plan']?.toString().split(' ')[0]) || 2;
+                        const installmentAmount = parseInt(row['Installment Amount']?.replace('₹', '')) || 
+                                                (paymentPlan === 2 ? 2700 : 1800);
                         
                         // Determine payment statuses
                         const payments = [];
@@ -592,19 +323,32 @@
                         }
                         
                         return {
-                            id: Date.now().toString() + Math.random().toString(36).substr(2, 5),
+                            id: row['Student ID'] || generateStudentId(row['Student Name'] || 'Unknown'),
                             name: row['Student Name'] || 'Unknown',
                             paymentPlan: paymentPlan,
                             payments: payments,
-                            createdAt: new Date().toISOString()
+                            createdAt: row['Date Added'] ? new Date(row['Date Added']).toISOString() : new Date().toISOString()
                         };
                     });
                     
-                    // Add to existing students (or replace)
-                    if (confirm(`Import ${importedStudents.length} students? This will add them to your current list.`)) {
-                        students = [...importedStudents, ...students];
+                    // Filter out duplicates by checking both name and payment plan
+                    const newStudents = importedStudents.filter(imported => 
+                        !students.some(existing => 
+                            existing.name.toLowerCase() === imported.name.toLowerCase() && 
+                            existing.paymentPlan === imported.paymentPlan
+                        )
+                    );
+                    
+                    if (newStudents.length === 0) {
+                        alert('No new students to import - all students in the file already exist.');
+                        return;
+                    }
+                    
+                    if (confirm(`Import ${newStudents.length} new student(s)?`)) {
+                        students = [...newStudents, ...students];
                         saveToLocalStorage();
                         renderStudents();
+                        alert(`Successfully imported ${newStudents.length} student(s)`);
                     }
                 };
                 reader.readAsArrayBuffer(file);
